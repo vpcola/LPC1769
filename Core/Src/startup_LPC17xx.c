@@ -37,11 +37,12 @@
 //*****************************************************************************
 void Reset_Handler(void);
 void ResetISR(void) ALIAS(Reset_Handler);
-static void NMI_Handler(void);
-static void HardFault_Handler(void);
-static void MemManage_Handler(void);
-static void BusFault_Handler(void);
-static void UsageFault_Handler(void);
+void NMI_Handler(void);
+void HardFault_Handler(void);
+void MemManage_Handler(void);
+void BusFault_Handler(void);
+void UsageFault_Handler(void);
+
 static void SVC_Handler(void);
 static void DebugMon_Handler(void);
 static void PendSV_Handler(void);
@@ -89,13 +90,6 @@ void MCPWM_IRQHandler(void) ALIAS(IntDefaultHandler);
 void QEI_IRQHandler(void) ALIAS(IntDefaultHandler);
 void PLL1_IRQHandler(void) ALIAS(IntDefaultHandler);
 
-/*
-extern void xPortSysTickHandler(void);
-extern void xPortPendSVHandler(void);
-extern void vPortSVCHandler( void );
-extern void vEMAC_ISR( void );
-*/
-
 //*****************************************************************************
 //
 // The entry point for the C++ library startup
@@ -106,11 +100,9 @@ extern WEAK void __libc_init_array(void);
 //*****************************************************************************
 //
 // The entry point for the application.
-// __main() is the entry point for redlib based applications
 // main() is the entry point for newlib based applications
 //
 //*****************************************************************************
-extern WEAK void __main(void);
 extern WEAK void main(void);
 //*****************************************************************************
 //
@@ -118,7 +110,7 @@ extern WEAK void main(void);
 //
 //*****************************************************************************
 extern unsigned long _vStackTop;
-extern unsigned long _VectorChecksum;
+WEAK extern void __LPC_Checksum();
 
 //*****************************************************************************
 //
@@ -137,15 +129,15 @@ void (* const g_pfnVectors[])(void) =
 	MemManage_Handler,						// The MPU fault handler
 	BusFault_Handler,						// The bus fault handler
 	UsageFault_Handler,						// The usage fault handler
-	0,			   							// Reserved
-	0,										// Reserved
-	0,										// Reserved
-	0,										// Reserved
-	SVC_Handler,                        // SVCall handler
-	DebugMon_Handler,						// Debug monitor handler
-	0,										// Reserved
-	PendSV_Handler,                     // The PendSV handler
-	SysTick_Handler,                    // The SysTick handler
+	__LPC_Checksum,							// Reserved
+	0,								// Reserved
+	0,								// Reserved
+	0,								// Reserved
+	SVC_Handler,                    // SVCall handler
+	DebugMon_Handler,		// Debug monitor handler
+	0,				// Reserved
+	PendSV_Handler,                 // The PendSV handler
+	SysTick_Handler,                // The SysTick handler
 
 	// Chip Level - LPC17
 	WDT_IRQHandler,							// 16, 0x40 - WDT
@@ -258,35 +250,35 @@ void Reset_Handler(void)
 // by a debugger.
 //
 //*****************************************************************************
-static void NMI_Handler(void)
+void NMI_Handler(void)
 {
     while(1)
     {
     }
 }
 
-static void HardFault_Handler(void)
+void HardFault_Handler(void)
 {
     while(1)
     {
     }
 }
 
-static void MemManage_Handler(void)
+void MemManage_Handler(void)
 {
     while(1)
     {
     }
 }
 
-static void BusFault_Handler(void)
+void BusFault_Handler(void)
 {
     while(1)
     {
     }
 }
 
-static void UsageFault_Handler(void)
+void UsageFault_Handler(void)
 {
     while(1)
     {
