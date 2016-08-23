@@ -7,7 +7,7 @@
 #include <sys/times.h>
 #include <sys/unistd.h>
 
-#include "lpc17xx.h"
+#include "LPC17xx.h"
 #include "core_cm3.h"
 
 #undef errno
